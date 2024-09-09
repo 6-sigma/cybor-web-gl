@@ -220,6 +220,8 @@ export const UnityComponent = () => {
                 return;
               }
 
+              transaction.withValue(BigInt(10 * 1e12)); // 10 VARA
+
               await transaction.calculateGas();
               await transaction.signAndSend();
               
