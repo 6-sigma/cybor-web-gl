@@ -215,12 +215,12 @@ export const UnityComponent = () => {
               if (balance) {
                 b = getFormattedBalanceValue(balance + '');
               }
-              if (b < BigNumber(10 * 1e12)) {
+              if (b < BigNumber(101 * 1e12)) {
                 alert("Insufficient balance");
                 return;
               }
 
-              transaction.withValue(BigInt(10 * 1e12)); // 10 VARA
+              transaction.withValue(BigInt(101 * 1e12)); // 101 VARA
 
               await transaction.calculateGas();
               await transaction.signAndSend();
