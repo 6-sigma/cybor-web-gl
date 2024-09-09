@@ -20,10 +20,10 @@ export const UnityComponent = () => {
   const { getFormattedBalanceValue } = useBalanceFormat();
 
   const { unityProvider, sendMessage, isLoaded } = useUnityContext({
-    loaderUrl: 'Build-WebGL/Build/Build-WebGL.loader.js',
-    dataUrl: 'Build-WebGL/Build/Build-WebGL.data',
-    frameworkUrl: 'Build-WebGL/Build/Build-WebGL.framework.js',
-    codeUrl: 'Build-WebGL/Build/Build-WebGL.wasm',
+    loaderUrl: 'Cybor-WebGL/Build/Cybor-WebGL.loader.js',
+    dataUrl: 'Cybor-WebGL/Build/Cybor-WebGL.data',
+    frameworkUrl: 'Cybor-WebGL/Build/Cybor-WebGL.framework.js',
+    codeUrl: 'Cybor-WebGL/Build/Cybor-WebGL.wasm',
   });
 
 
