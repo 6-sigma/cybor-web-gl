@@ -185,7 +185,8 @@ export const UnityComponent = () => {
               fetchMyCybors();
             } catch (error) {
               console.error('铸造 cybor 时出错:', error);
-              CallUnityFunction('mint_error', { message: '铸造 cybor 时出错' });
+              alert('铸造 cybor 时出错' + error);
+              // CallUnityFunction('mint_error', { message: '铸造 cybor 时出错' });
             }
           };
 
@@ -194,7 +195,51 @@ export const UnityComponent = () => {
           console.error('账户未准备好进行铸造');
           CallUnityFunction('mint_error', { message: '账户未准备好进行铸造' });
         }
-      }
+
+      } else if ('uplevel_cybor' === req.act) {
+
+        var cyborId = reqBody['cybor_id'];
+        console.log('uplevel_cybor ::::: ', cyborId);
+        if (account && isAccountReady) {
+          const uplevelCybor = async () => {
+            try {
+              const result = await refreshAccount();
+              if (!result || !result.externalAccount || !result.injector) {
+                return;
+              }
+              const {externalAccount, injector} = result;
+              const transaction = SigmaverseProgram.cyborNft.upLevel(cyborId);
+              transaction.withAccount(externalAccount.address, { signer: injector.signer });
+
+              var b = BigNumber(0, 10);
+              if (balance) {
+                b = getFormattedBalanceValue(balance + '');
+              }
+              if (b < BigNumber(10 * 1e12)) {
+                alert("Insufficient balance");
+                return;
+              }
+
+              await transaction.calculateGas();
+              await transaction.signAndSend();
+              
+              // 铸造后刷新 cybor 列表
+              fetchMyCybors();
+            } catch (error) {
+              console.error('升级 cybor 时出错:', error);
+              alert('升级 cybor 时出错' + error);
+              // CallUnityFunction('uplevel_error', { message: '铸造 cybor 时出错' });
+            }
+          };
+
+          uplevelCybor();
+        } else {
+          console.error('账户未准备好进行铸造');
+          CallUnityFunction('mint_error', { message: '账户未准备好进行铸造' });
+        }
+
+      } 
+   
     } catch (err) {
       console.debug('DEBUG:::: ' + err);
     }
@@ -235,7 +280,7 @@ export const UnityComponent = () => {
       <div style={{ width: dimensions.width, height: dimensions.height }}>
         <Unity
           unityProvider={unityProvider}
-          style={{ width: '100%', height: '80%', paddingTop: ' 2%', paddingLeft: '2%', paddingRight: '4%' }}
+          style={{ width: '100%', height: '100%', paddingTop: ' 0%', paddingLeft: '0%', paddingRight: '0%' }}
         />
       </div>
     </div>
